@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // Creates a new story and pushes that route
   void _createStory() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => StoryView()));
+        context, MaterialPageRoute(builder: (context) => StoryView.addStory()));
   }
 
   @override
