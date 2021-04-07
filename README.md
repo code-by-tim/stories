@@ -1,16 +1,16 @@
-# stories
+# Stories
 
 A new Flutter project.
 
-## Getting Started
+## What's gonna be in it?
 
-This project is a starting point for a Flutter application.
+This is a littl app to write reports and stories. A story can contain different text formats as well as audio files and pictures.
 
-A few resources to get you started if this is your first Flutter project:
+The app is way more simplistic than other note apps like Word, but gives you more freedom than e.g. Google Keep. A major reason was, that OneNote is not gonna be available anymore soon.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+The app is written in Dart using Flutter:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [Flutter - Google's UI toolkit for cross-plattform applications](https://flutter.dev/)
+- [Dart](https://dart.dev/)
+
+Have fun with the app!
