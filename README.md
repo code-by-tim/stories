@@ -4,7 +4,7 @@ A new Flutter project.
 
 ## What's gonna be in it?
 
-This is a littl app to write reports and stories. A story can contain different text formats as well as audio files and pictures.
+This is a little app to write reports and stories. A story can contain different text formats as well as audio files and pictures.
 
 The app is way more simplistic than other note apps like Word, but gives you more freedom than e.g. Google Keep. A major reason was, that OneNote is not gonna be available anymore soon.
 
