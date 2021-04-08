@@ -5,4 +5,9 @@ class EditorModel extends ChangeNotifier {
     inEditMode = true;
   }
   bool inEditMode;
+
+  void switchEditMode() {
+    inEditMode = !inEditMode;
+    notifyListeners();
+  }
 }
