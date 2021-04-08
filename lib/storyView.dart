@@ -1,31 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:stories/editorModel.dart';
 
 class StoryView extends StatefulWidget {
-  StoryView.addStory();
+  StoryView.addStory() : _isInEditMode = true;
 
-  StoryView();
+  final bool _isInEditMode;
+
+  StoryView.viewStory() : _isInEditMode = false;
 
   @override
-  _StoryViewState createState() => _StoryViewState();
+  _StoryViewState createState() => _StoryViewState(_isInEditMode);
 }
 
 class _StoryViewState extends State<StoryView> {
+  _StoryViewState(bool editMode) {
+    _inEditMode = editMode;
+  }
+
+  bool _inEditMode;
+
+  void _switchEditMode() {
+    setState(() {
+      _inEditMode = !_inEditMode;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<EditorModel>(
-      builder: (context, editor, child) {
-        return Scaffold(
-          appBar: AppBar(
-            actions: [
-              IconButton(
-                  icon: Icon(editor.inEditMode ? Icons.edit_off : Icons.edit),
-                  onPressed: editor.switchEditMode)
-            ],
-          ),
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              icon: Icon(_inEditMode ? Icons.edit_off : Icons.edit),
+              onPressed: _switchEditMode)
+        ],
+      ),
     );
   }
 }
