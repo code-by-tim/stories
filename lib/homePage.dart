@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stories/editorModel.dart';
-import 'package:stories/storyModel.dart';
+import 'package:stories/stateManagement/editorModel.dart';
+import 'package:stories/stateManagement/storyModel.dart';
 import 'package:stories/storyView.dart';
 
 class MyHomePage extends StatefulWidget {

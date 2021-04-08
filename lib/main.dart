@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'homePage.dart';
-import 'storyModel.dart';
+import 'stateManagement/storyModel.dart';
 
 void main() {
   runApp(MyApp());

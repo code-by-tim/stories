@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stories/editor.dart';
+import 'package:stories/storyView/editor.dart';
 
 class StoryView extends StatefulWidget {
   StoryView.addStory() : _isInEditMode = true;
