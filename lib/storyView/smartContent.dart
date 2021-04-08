@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 // Defines the different types of text which can be displayed in a story,
 // including the text type picture and audioFile
-enum SmartTextType {
+enum SmartContentType {
   T,
   HEADING,
   QUOTE,
@@ -16,13 +16,13 @@ enum SmartTextType {
 } // PICTURE, AUDIO to be added
 
 // Defines style, padding etc. for each text type
-extension SmartTextStyle on SmartTextType {
+extension SmartTextStyle on SmartContentType {
   TextStyle get textStyle {
     switch (this) {
-      case SmartTextType.HEADING:
+      case SmartContentType.HEADING:
         return TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
         break;
-      case SmartTextType.QUOTE:
+      case SmartContentType.QUOTE:
         return TextStyle(
             fontSize: 16.0, fontStyle: FontStyle.italic, color: Colors.white70);
         break;
@@ -33,11 +33,11 @@ extension SmartTextStyle on SmartTextType {
 
   EdgeInsets get padding {
     switch (this) {
-      case SmartTextType.HEADING:
+      case SmartContentType.HEADING:
         return EdgeInsets.fromLTRB(16, 24, 16, 8);
         break;
-      case SmartTextType.NUMERATION:
-      case SmartTextType.BULLET:
+      case SmartContentType.NUMERATION:
+      case SmartContentType.BULLET:
         return EdgeInsets.fromLTRB(24, 8, 16, 8);
       default:
         return EdgeInsets.fromLTRB(16, 8, 16, 8);
@@ -46,7 +46,7 @@ extension SmartTextStyle on SmartTextType {
 
   TextAlign get align {
     switch (this) {
-      case SmartTextType.QUOTE:
+      case SmartContentType.QUOTE:
         return TextAlign.center;
         break;
       default:
@@ -57,10 +57,10 @@ extension SmartTextStyle on SmartTextType {
   // Returns null, a bullet point or the fitting number
   String get prefix {
     switch (this) {
-      case SmartTextType.BULLET:
+      case SmartContentType.BULLET:
         return '\u2022 ';
         break;
-      case SmartTextType.NUMERATION:
+      case SmartContentType.NUMERATION:
         return '1';
         break;
       default:
@@ -70,12 +70,12 @@ extension SmartTextStyle on SmartTextType {
 }
 
 // This widget displays the text-Type
-class SmartTextField extends StatelessWidget {
-  SmartTextField(
-      {Key key, this.type, this.controller, this.focusNode, this.readOnly})
+class SmartContent extends StatelessWidget {
+  SmartContent(
+      {Key key, this.readOnly, this.type, this.controller, this.focusNode})
       : super(key: key);
 
-  final SmartTextType type;
+  final SmartContentType type;
   final TextEditingController controller;
   final FocusNode focusNode;
   final bool readOnly;
@@ -83,6 +83,7 @@ class SmartTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      //Here in the future ask for type, if it is picture or audio then return custom widget
       readOnly: readOnly,
       controller: controller,
       focusNode: focusNode,

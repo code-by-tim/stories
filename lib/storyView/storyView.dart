@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:stories/stateManagement/editorModel.dart';
+import 'package:stories/storyView/smartContent.dart';
 
 // This widget displays the StoryView PAGE
 // It displays it's content slightly different depending if it is in EditMode or not.
@@ -54,6 +57,8 @@ class _StoryViewState extends State<StoryView> {
 // Build the ListView of SmartTextFields here
 // and show the toolbar if the keyboard is visible.
 // I don't need to implement keyboard actions, that is all handled by the TextFields,
+//
+// Editor has access to its EditorModel through Consumer<EditorModel>
 class Editor extends StatelessWidget {
   const Editor({this.inEditMode});
 
@@ -61,6 +66,28 @@ class Editor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('$inEditMode'));
+    return Stack(
+      children: [
+        Positioned(
+          child: Consumer<EditorModel>(
+            builder: (context, editorModel, _) {
+              return ListView.builder(
+                itemCount: editorModel.fieldAmount,
+                itemBuilder: (context, index) {
+                  return Focus(
+                    child: SmartContent(
+                      readOnly: !inEditMode,
+                      type: editorModel.getTypeAt(index),
+                      controller: editorModel.getControllerAt(index),
+                      focusNode: editorModel.getFocusNodeAt(index),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
+    );
   }
 }

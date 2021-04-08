@@ -23,7 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => ChangeNotifierProvider<EditorModel>(
-          create: (context) => EditorModel(),
+          create: (context) => EditorModel.newStory(),
           child: StoryView.addStory(),
         ),
       ),
