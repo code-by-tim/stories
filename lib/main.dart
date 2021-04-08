@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'homePage.dart';
+import 'homepage.dart';
 import 'stateManagement/storyModel.dart';
 
 void main() {
