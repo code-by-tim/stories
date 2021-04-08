@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:stories/storyView/editor.dart';
 
+// This widget displays the StoryView PAGE
+// It displays it's content slightly different depending if it is in EditMode or not.
+// This state is handled with a stateful widget, not in the EditorModel.
+// That might be changed later.
+//
+// This was provided with the fitting EditorModel through ChangeNotifierProvider.
+// It can be accessed here with Consumer etc.
 class StoryView extends StatefulWidget {
-  StoryView.addStory() : _isInEditMode = true;
+  StoryView.addStory() : _startInEditMode = true;
+  StoryView.viewStory() : _startInEditMode = false;
 
-  final bool _isInEditMode;
-
-  StoryView.viewStory() : _isInEditMode = false;
+  final bool _startInEditMode;
 
   @override
-  _StoryViewState createState() => _StoryViewState(_isInEditMode);
+  _StoryViewState createState() => _StoryViewState(_startInEditMode);
 }
 
 class _StoryViewState extends State<StoryView> {
+  //Initialize state with the right editMode
   _StoryViewState(bool editMode) {
     _inEditMode = editMode;
   }
 
   bool _inEditMode;
 
+  // Switches the EditMode to the contrary Mode and calls setState()
   void _switchEditMode() {
     setState(() {
       _inEditMode = !_inEditMode;

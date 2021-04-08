@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stories/stateManagement/editorModel.dart';
 import 'package:stories/stateManagement/storyModel.dart';
-import 'package:stories/storyView.dart';
+import 'package:stories/storyView/storyView.dart';
 
+// This widget has access to the StoryModel through Consumer<StoryModel>
+// (see main.dart)
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -14,8 +16,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // Creates a new story and pushes that route
-  // It also creates or overgives the suitable editor model
+  // Creates a new story and provides an Editor Model,
+  // which can be accessed in the StoryView with Consumer<EditorModel>
   void _createStory() {
     Navigator.push(
       context,
