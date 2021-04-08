@@ -42,7 +42,7 @@ class _StoryViewState extends State<StoryView> {
       appBar: AppBar(
         actions: [
           IconButton(
-              icon: Icon(_inEditMode ? Icons.edit_off : Icons.edit),
+              icon: Icon(_inEditMode ? Icons.edit : Icons.edit_off),
               onPressed: _switchEditMode)
         ],
       ),
@@ -70,22 +70,23 @@ class Editor extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        // List of content:
         Positioned(
           top: 16,
           left: 0,
           right: 0,
+          bottom: 56,
           child: Consumer<EditorModel>(
             builder: (context, editorModel, _) {
               return ListView.builder(
-                itemCount: editorModel
-                    .fieldAmount, //I dont have any fields implemented yet
+                itemCount: editorModel.fieldAmount,
                 itemBuilder: (context, index) {
                   return Focus(
                     child: SmartContent(
                       readOnly: !inEditMode,
-                      type: editorModel.getTypeAt(index),
+                      /*type: editorModel.getTypeAt(index),
                       controller: editorModel.getControllerAt(index),
-                      focusNode: editorModel.getFocusNodeAt(index),
+                      focusNode: editorModel.getFocusNodeAt(index),*/
                     ),
                   );
                 },
@@ -96,6 +97,9 @@ class Editor extends StatelessWidget {
         //Toolbar:
         if (showToolbar)
           Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
             child: Consumer<EditorModel>(
               builder: (context, editorModel, _) {
                 return Toolbar(

@@ -16,6 +16,7 @@ class EditorModel extends ChangeNotifier {
 
   EditorModel.newStory() {
     selectedType = SmartContentType.HEADING;
+    _types.add(selectedType);
   }
 
 // Getters for the different Lists

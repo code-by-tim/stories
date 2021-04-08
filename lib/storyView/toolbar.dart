@@ -10,6 +10,29 @@ class Toolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Row(
+      children: [
+        IconButton(
+          icon: Icon(Icons.bathtub),
+          onPressed: () => onSelected,
+        ),
+        IconButton(
+          icon: Icon(Icons.ac_unit_outlined),
+          onPressed: () => onSelected,
+        ),
+        IconButton(
+          icon: Icon(Icons.ac_unit_outlined),
+          onPressed: () => onSelected,
+        ),
+        IconButton(
+          icon: Icon(Icons.ac_unit_outlined),
+          onPressed: () => onSelected,
+        ),
+        IconButton(
+          icon: Icon(Icons.ac_unit_outlined),
+          onPressed: () => onSelected,
+        ),
+      ],
+    );
   }
 }
