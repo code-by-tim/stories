@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stories/editor.dart';
 
 class StoryView extends StatefulWidget {
   StoryView.addStory() : _isInEditMode = true;
@@ -34,6 +35,7 @@ class _StoryViewState extends State<StoryView> {
               onPressed: _switchEditMode)
         ],
       ),
+      body: Editor(),
     );
   }
 }
