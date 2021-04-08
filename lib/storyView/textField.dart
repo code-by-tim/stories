@@ -68,3 +68,34 @@ extension SmartTextStyle on SmartTextType {
     }
   }
 }
+
+// This widget displays the text-Type
+class SmartTextField extends StatelessWidget {
+  SmartTextField(
+      {Key key, this.type, this.controller, this.focusNode, this.readOnly})
+      : super(key: key);
+
+  final SmartTextType type;
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final bool readOnly;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      readOnly: readOnly,
+      controller: controller,
+      focusNode: focusNode,
+      keyboardType: TextInputType.multiline,
+      maxLines: null,
+      textAlign: type.align,
+      style: type.textStyle,
+      decoration: InputDecoration(
+          border: InputBorder.none,
+          prefixText: type.prefix,
+          prefixStyle: type.textStyle,
+          isDense: true,
+          contentPadding: type.padding),
+    );
+  }
+}

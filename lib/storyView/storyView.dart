@@ -35,14 +35,17 @@ class _StoryViewState extends State<StoryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-                icon: Icon(_inEditMode ? Icons.edit_off : Icons.edit),
-                onPressed: _switchEditMode)
-          ],
-        ),
-        body: Editor());
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              icon: Icon(_inEditMode ? Icons.edit_off : Icons.edit),
+              onPressed: _switchEditMode)
+        ],
+      ),
+      body: Editor(
+        inEditMode: _inEditMode,
+      ),
+    );
   }
 }
 
@@ -52,8 +55,12 @@ class _StoryViewState extends State<StoryView> {
 // and show the toolbar if the keyboard is visible.
 // I don't need to implement keyboard actions, that is all handled by the TextFields,
 class Editor extends StatelessWidget {
+  const Editor({this.inEditMode});
+
+  final bool inEditMode;
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Center(child: Text('$inEditMode'));
   }
 }
