@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stories/stateManagement/editorModel.dart';
 import 'package:stories/storyView/smartContent.dart';
+import 'package:stories/storyView/toolbar.dart';
 
 // This widget displays the StoryView PAGE
 // It displays it's content slightly different depending if it is in EditMode or not.
@@ -63,16 +64,21 @@ class Editor extends StatelessWidget {
   const Editor({this.inEditMode});
 
   final bool inEditMode;
+  final bool showToolbar = true;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Positioned(
+          top: 16,
+          left: 0,
+          right: 0,
           child: Consumer<EditorModel>(
             builder: (context, editorModel, _) {
               return ListView.builder(
-                itemCount: editorModel.fieldAmount,
+                itemCount: editorModel
+                    .fieldAmount, //I dont have any fields implemented yet
                 itemBuilder: (context, index) {
                   return Focus(
                     child: SmartContent(
@@ -87,6 +93,17 @@ class Editor extends StatelessWidget {
             },
           ),
         ),
+        //Toolbar:
+        if (showToolbar)
+          Positioned(
+            child: Consumer<EditorModel>(
+              builder: (context, editorModel, _) {
+                return Toolbar(
+                  selectedType: editorModel.selectedType,
+                );
+              },
+            ),
+          )
       ],
     );
   }

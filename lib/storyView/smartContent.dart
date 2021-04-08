@@ -84,6 +84,7 @@ class SmartContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       //Here in the future ask for type, if it is picture or audio then return custom widget
+      autofocus: true,
       readOnly: readOnly,
       controller: controller,
       focusNode: focusNode,
