@@ -83,6 +83,10 @@ class Editor extends StatelessWidget {
                 itemCount: editorModel.fieldAmount,
                 itemBuilder: (context, index) {
                   return Focus(
+                    onFocusChange: (hasFocus) {
+                      if (hasFocus)
+                        editorModel.setFocus(editorModel.getTypeAt(index));
+                    },
                     child: SmartContent(
                       readOnly: !inEditMode,
                       /*type: editorModel.getTypeAt(index),
@@ -107,6 +111,7 @@ class Editor extends StatelessWidget {
                   builder: (context, editorModel, _) {
                     return Toolbar(
                       selectedType: editorModel.selectedType,
+                      onSelected: editorModel.setType,
                     );
                   },
                 ),
