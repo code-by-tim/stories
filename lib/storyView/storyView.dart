@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
 import 'package:stories/stateManagement/editorModel.dart';
 import 'package:stories/storyView/smartContent.dart';
@@ -42,7 +43,7 @@ class _StoryViewState extends State<StoryView> {
       appBar: AppBar(
         actions: [
           IconButton(
-              icon: Icon(_inEditMode ? Icons.edit : Icons.edit_off),
+              icon: Icon(_inEditMode ? Icons.edit_off : Icons.edit),
               onPressed: _switchEditMode)
         ],
       ),
@@ -61,7 +62,7 @@ class _StoryViewState extends State<StoryView> {
 //
 // Editor has access to its EditorModel through Consumer<EditorModel>
 class Editor extends StatelessWidget {
-  const Editor({this.inEditMode});
+  Editor({this.inEditMode});
 
   final bool inEditMode;
   final bool showToolbar = true;
@@ -95,19 +96,29 @@ class Editor extends StatelessWidget {
           ),
         ),
         //Toolbar:
-        if (showToolbar)
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Consumer<EditorModel>(
-              builder: (context, editorModel, _) {
-                return Toolbar(
-                  selectedType: editorModel.selectedType,
-                );
-              },
-            ),
-          )
+        KeyboardVisibilityBuilder(
+          builder: (context, keyboardIsVisible) {
+            if (keyboardIsVisible) {
+              return Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Consumer<EditorModel>(
+                  builder: (context, editorModel, _) {
+                    return Toolbar(
+                      selectedType: editorModel.selectedType,
+                    );
+                  },
+                ),
+              );
+            } else {
+              return Container(
+                width: 0.0,
+                height: 0.0,
+              );
+            }
+          },
+        )
       ],
     );
   }
