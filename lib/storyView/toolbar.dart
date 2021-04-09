@@ -24,42 +24,42 @@ class Toolbar extends StatelessWidget {
               color: selectedType == SmartContentType.HEADING
                   ? Colors.teal
                   : Colors.black,
-              onPressed: () => onSelected,
+              onPressed: () => onSelected(SmartContentType.HEADING),
             ),
             IconButton(
               icon: Icon(Icons.format_quote),
               color: selectedType == SmartContentType.QUOTE
                   ? Colors.teal
                   : Colors.black,
-              onPressed: () => onSelected,
+              onPressed: () => onSelected(SmartContentType.QUOTE),
             ),
             IconButton(
               icon: Icon(Icons.format_list_bulleted),
               color: selectedType == SmartContentType.BULLET
                   ? Colors.teal
                   : Colors.black,
-              onPressed: () => onSelected,
+              onPressed: () => onSelected(SmartContentType.BULLET),
             ),
             IconButton(
               icon: Icon(Icons.format_list_numbered),
               color: selectedType == SmartContentType.NUMERATION
                   ? Colors.teal
                   : Colors.black,
-              onPressed: () => onSelected,
+              onPressed: () => onSelected(SmartContentType.NUMERATION),
             ),
             IconButton(
               icon: Icon(Icons.mic),
               color: selectedType == SmartContentType.NUMERATION
                   ? Colors.teal
                   : Colors.black,
-              onPressed: () => onSelected,
+              onPressed: () => onSelected(SmartContentType.NUMERATION),
             ),
             IconButton(
               icon: Icon(Icons.photo_camera),
               color: selectedType == SmartContentType.NUMERATION
                   ? Colors.teal
                   : Colors.black,
-              onPressed: () => onSelected,
+              onPressed: () => onSelected(SmartContentType.NUMERATION),
             ),
           ],
         ),
