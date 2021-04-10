@@ -24,7 +24,9 @@ extension SmartTextStyle on SmartContentType {
         break;
       case SmartContentType.QUOTE:
         return TextStyle(
-            fontSize: 16.0, fontStyle: FontStyle.italic, color: Colors.white70);
+            fontSize: 16.0,
+            fontStyle: FontStyle.italic,
+            color: Colors.grey[600]);
         break;
       default:
         return TextStyle(fontSize: 16.0);
@@ -61,7 +63,7 @@ extension SmartTextStyle on SmartContentType {
         return '\u2022 ';
         break;
       case SmartContentType.NUMERATION:
-        return '1';
+        return '1. ';
         break;
       default:
         return null;
@@ -83,7 +85,8 @@ class SmartContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      //Here in the future ask for type, if it is picture or audio then return custom widget
+      //Here in the future ask for type, if it is picture or audio,
+      //then return respective widget
       autofocus: true,
       readOnly: readOnly,
       controller: controller,
