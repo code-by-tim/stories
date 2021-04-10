@@ -89,9 +89,9 @@ class Editor extends StatelessWidget {
                     },
                     child: SmartContent(
                       readOnly: !inEditMode,
-                      /*type: editorModel.getTypeAt(index),
+                      type: editorModel.getTypeAt(index),
                       controller: editorModel.getControllerAt(index),
-                      focusNode: editorModel.getFocusNodeAt(index),*/
+                      focusNode: editorModel.getFocusNodeAt(index),
                     ),
                   );
                 },
