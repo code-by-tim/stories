@@ -88,6 +88,7 @@ class SmartContent extends StatelessWidget {
       //Here in the future ask for type, if it is picture or audio,
       //then return respective widget
       autofocus: true,
+      // Setting this to true updates the UI and the User Input disappears
       readOnly: readOnly,
       controller: controller,
       focusNode: focusNode,
