@@ -115,13 +115,20 @@ class EditorModel extends ChangeNotifier {
       }
       // if the text contains '\u200B' more than once,
       // just keep the first instance
-      /*if (controller.text.lastIndexOf('\u200B') > 3) {
+      if (controller.text.lastIndexOf('\u200B') > 3) {
         controller.text =
             '\u200B' + controller.text.substring(1).replaceAll('\u200B', '');
-      }*/
+      }
 
-      // If selection is before the '\u200B', set Selection behind
-      //if (controller.selection)
+      // If selection is before or contains the '\u200B', set Selection behind
+      // This leads to bugs still. Fix later
+      // if (controller.selection.isCollapsed &&
+      //     controller.text
+      //         .substring(controller.selection.end)
+      //         .contains('\u200B')) {
+      //   controller.selection = TextSelection.fromPosition(
+      //       TextPosition(offset: controller.selection.start + 1));
+      // }
     });
 
     _types.insert(index, type);
