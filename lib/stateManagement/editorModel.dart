@@ -72,6 +72,20 @@ class EditorModel extends ChangeNotifier {
 
     // Handle editing changes
     controller.addListener(() {
+      // If selection is before or contains the '\u200B', set Selection behind
+      // Throws bug right now, see word document
+      // if (controller.selection.base.offset == 0) {
+      //   if (controller.text.length > 0) {
+      //     controller.selection = TextSelection(
+      //       baseOffset: controller.selection.baseOffset + 1,
+      //       extentOffset: controller.selection.extentOffset,
+      //     );
+      //   } else {
+      //     controller.selection =
+      //         TextSelection.fromPosition(TextPosition(offset: 1));
+      //   }
+      // }
+
       // Deletion or Merging
       if (!controller.text.startsWith('\u200B')) {
         final int index = _controllers.indexOf(controller);
@@ -90,7 +104,7 @@ class EditorModel extends ChangeNotifier {
           _controllers.removeAt(index);
           _nodes.removeAt(index);
           notifyListeners();
-        } else if (index == 1) {
+        } else if (index == 1 || index == 0) {
           // If the user deletes '\u200B' from the first normal text block
           // put it back again
           controller.text = '\u200B' + controller.text;
@@ -119,16 +133,6 @@ class EditorModel extends ChangeNotifier {
         controller.text =
             '\u200B' + controller.text.substring(1).replaceAll('\u200B', '');
       }
-
-      // If selection is before or contains the '\u200B', set Selection behind
-      // This leads to bugs still. Fix later
-      // if (controller.selection.isCollapsed &&
-      //     controller.text
-      //         .substring(controller.selection.end)
-      //         .contains('\u200B')) {
-      //   controller.selection = TextSelection.fromPosition(
-      //       TextPosition(offset: controller.selection.start + 1));
-      // }
     });
 
     _types.insert(index, type);
