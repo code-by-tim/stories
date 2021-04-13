@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:stories/storyView/smartContent.dart';
 
 // This class stores everything related to a single story
@@ -11,9 +11,9 @@ class EditorModel extends ChangeNotifier {
   List<SmartContentType> _types = [];
   List<FocusNode> _nodes = [];
   List<TextEditingController> _controllers = [];
+  List<int> _numeration = [];
 
   SmartContentType selectedType;
-  int numerationNumber;
 
   // This constructor creates the first few SmartContent Fields for a new
   // and empty story.
@@ -21,7 +21,6 @@ class EditorModel extends ChangeNotifier {
   // date and location field. (Also gonna be a type of SmartContentType)
   EditorModel.newStory() {
     selectedType = SmartContentType.HEADING;
-    numerationNumber = 0;
     insertContent(index: 0, type: selectedType);
   }
 
@@ -32,6 +31,7 @@ class EditorModel extends ChangeNotifier {
   TextEditingController getControllerAt(int index) =>
       _controllers.elementAt(index);
   SmartContentType getTypeAt(int index) => _types.elementAt(index);
+  int getNumerationAt(int index) => _numeration.elementAt(index);
 
   // Call this method after another SmartContent Field is focused to update
   // the selected type
@@ -73,7 +73,6 @@ class EditorModel extends ChangeNotifier {
     // Handle editing changes
     controller.addListener(() {
       // If selection is before or contains the '\u200B', set Selection behind
-      // Differs two cases, 1. it is collapsed 2. It spans a text
       if (controller.selection.base.offset == 0) {
         if (controller.selection.isCollapsed) {
           controller.selection =
@@ -104,7 +103,7 @@ class EditorModel extends ChangeNotifier {
           _controllers.removeAt(index);
           _nodes.removeAt(index);
           notifyListeners();
-        } else if (index == 1 || index == 0) {
+        } else if (index <= 1) {
           // If the user deletes '\u200B' from the first normal text block
           // put it back again
           controller.text = '\u200B' + controller.text;
@@ -127,8 +126,7 @@ class EditorModel extends ChangeNotifier {
         getFocusNodeAt(index + 1).requestFocus();
         notifyListeners();
       }
-      // if the text contains '\u200B' more than once,
-      // just keep the first instance
+      // if text contains '\u200B' more than once, just keep the first instance
       if (controller.text.lastIndexOf('\u200B') > 3) {
         controller.text =
             '\u200B' + controller.text.substring(1).replaceAll('\u200B', '');
@@ -138,5 +136,6 @@ class EditorModel extends ChangeNotifier {
     _types.insert(index, type);
     _nodes.insert(index, FocusNode());
     _controllers.insert(index, controller);
+    _numeration.insert(index, numerationNumber);
   }
 }

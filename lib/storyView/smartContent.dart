@@ -105,7 +105,7 @@ class SmartContent extends StatelessWidget {
       decoration: InputDecoration(
           border: InputBorder.none,
           prefixText: (type == SmartContentType.NUMERATION)
-              ? numerationNumber
+              ? numerationNumber + '.'
               : type.prefix,
           prefixStyle: type.textStyle,
           isDense: true,
