@@ -73,18 +73,18 @@ class EditorModel extends ChangeNotifier {
     // Handle editing changes
     controller.addListener(() {
       // If selection is before or contains the '\u200B', set Selection behind
-      // Throws bug right now, see word document
-      // if (controller.selection.base.offset == 0) {
-      //   if (controller.text.length > 0) {
-      //     controller.selection = TextSelection(
-      //       baseOffset: controller.selection.baseOffset + 1,
-      //       extentOffset: controller.selection.extentOffset,
-      //     );
-      //   } else {
-      //     controller.selection =
-      //         TextSelection.fromPosition(TextPosition(offset: 1));
-      //   }
-      // }
+      // Differs two cases, 1. it is collapsed 2. It spans a text
+      if (controller.selection.base.offset == 0) {
+        if (controller.selection.isCollapsed) {
+          controller.selection =
+              TextSelection.fromPosition(TextPosition(offset: 1));
+        } else {
+          controller.selection = TextSelection(
+            baseOffset: controller.selection.baseOffset + 1,
+            extentOffset: controller.selection.extentOffset,
+          );
+        }
+      }
 
       // Deletion or Merging
       if (!controller.text.startsWith('\u200B')) {
