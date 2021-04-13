@@ -74,13 +74,19 @@ extension SmartTextStyle on SmartContentType {
 // This widget displays the text-Type
 class SmartContent extends StatelessWidget {
   SmartContent(
-      {Key key, this.readOnly, this.type, this.controller, this.focusNode})
+      {Key key,
+      this.readOnly,
+      this.type,
+      this.numerationNumber,
+      this.controller,
+      this.focusNode})
       : super(key: key);
 
   final SmartContentType type;
   final TextEditingController controller;
   final FocusNode focusNode;
   final bool readOnly;
+  final String numerationNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +104,9 @@ class SmartContent extends StatelessWidget {
       style: type.textStyle,
       decoration: InputDecoration(
           border: InputBorder.none,
-          prefixText: type.prefix,
+          prefixText: (type == SmartContentType.NUMERATION)
+              ? numerationNumber
+              : type.prefix,
           prefixStyle: type.textStyle,
           isDense: true,
           contentPadding: type.padding),
