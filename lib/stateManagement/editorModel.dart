@@ -24,7 +24,7 @@ class EditorModel extends ChangeNotifier {
     insertContent(index: 0, type: selectedType);
   }
 
-  //Some useful methods
+  // Some useful methods
   int get fieldAmount => _types.length;
   int get activeFocusIndex => _nodes.indexWhere((node) => node.hasFocus);
   FocusNode getFocusNodeAt(int index) => _nodes.elementAt(index);
@@ -40,17 +40,45 @@ class EditorModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Updates the numeration, starting at startIndex.
+  // Stops if it reached the end of the SmartContentFields or
+  // if a field is not a Numeration anymore
+  void _updateNumeration({int startIndex}) {
+    int index = startIndex;
+    while (index <= fieldAmount - 1 &&
+        getTypeAt(index) == SmartContentType.NUMERATION) {
+      _numeration.removeAt(index);
+      _numeration.insert(index, getNumerationAt(index - 1) + 1 ?? 1);
+      index++;
+    }
+  }
+
   // Call this method after the user changes the SmartContentType of a Field
   // through the toolbar.
   void setType(SmartContentType pressedType) {
-    if (pressedType == selectedType) {
-      selectedType = SmartContentType.T;
-    } else {
-      selectedType = pressedType;
+    if (activeFocusIndex != 0) {
+      if (pressedType == selectedType) {
+        selectedType = SmartContentType.T;
+      } else {
+        selectedType = pressedType;
+      }
+
+      // Update _types
+      _types.removeAt(activeFocusIndex);
+      _types.insert(activeFocusIndex, selectedType);
+
+      // Update _numeration
+      if (selectedType == SmartContentType.NUMERATION) {
+        _numeration.removeAt(activeFocusIndex);
+        _numeration.insert(
+            activeFocusIndex, getNumerationAt(activeFocusIndex - 1) + 1);
+      } else {
+        _numeration.removeAt(activeFocusIndex);
+        _numeration.insert(activeFocusIndex, 0);
+      }
+      _updateNumeration(startIndex: activeFocusIndex + 1);
     }
-    // Update _types
-    _types.removeAt(activeFocusIndex);
-    _types.insert(activeFocusIndex, selectedType);
+
     notifyListeners();
   }
 
@@ -64,26 +92,14 @@ class EditorModel extends ChangeNotifier {
   //
   // This method itself does not call notifyListeners. Only the listener for
   // editing changes does.
-  void insertContent(
-      {int index, SmartContentType type, int numerationNumber, String text}) {
+  void insertContent({int index, SmartContentType type, String text}) {
     TextEditingController controller = TextEditingController(
       text: '\u200B' + (text ?? ''),
     );
 
     // Handle editing changes
     controller.addListener(() {
-      // If selection is before or contains the '\u200B', set Selection behind
-      if (controller.selection.base.offset == 0) {
-        if (controller.selection.isCollapsed) {
-          controller.selection =
-              TextSelection.fromPosition(TextPosition(offset: 1));
-        } else {
-          controller.selection = TextSelection(
-            baseOffset: controller.selection.baseOffset + 1,
-            extentOffset: controller.selection.extentOffset,
-          );
-        }
-      }
+      bool deletionHappened = false;
 
       // Deletion or Merging
       if (!controller.text.startsWith('\u200B')) {
@@ -102,12 +118,15 @@ class EditorModel extends ChangeNotifier {
           _types.removeAt(index);
           _controllers.removeAt(index);
           _nodes.removeAt(index);
+          _numeration.removeAt(index);
+          _updateNumeration(startIndex: index);
           notifyListeners();
         } else if (index <= 1) {
           // If the user deletes '\u200B' from the first normal text block
           // put it back again
           controller.text = '\u200B' + controller.text;
         }
+        deletionHappened = true;
       }
 
       // Creation after Enter
@@ -131,11 +150,28 @@ class EditorModel extends ChangeNotifier {
         controller.text =
             '\u200B' + controller.text.substring(1).replaceAll('\u200B', '');
       }
+
+      // If selection is before or contains the '\u200B', set Selection behind
+      if (controller.selection.base.offset == 0 && !deletionHappened) {
+        if (controller.selection.isCollapsed) {
+          controller.selection =
+              TextSelection.fromPosition(TextPosition(offset: 1));
+        } else {
+          controller.selection = TextSelection(
+            baseOffset: controller.selection.baseOffset + 1,
+            extentOffset: controller.selection.extentOffset,
+          );
+        }
+      }
     });
 
     _types.insert(index, type);
     _nodes.insert(index, FocusNode());
     _controllers.insert(index, controller);
-    _numeration.insert(index, numerationNumber);
+    _numeration.insert(
+        index,
+        (type == SmartContentType.NUMERATION)
+            ? getNumerationAt(index - 1) + 1
+            : 0);
   }
 }
