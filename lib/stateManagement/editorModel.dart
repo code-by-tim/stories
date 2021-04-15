@@ -145,6 +145,7 @@ class EditorModel extends ChangeNotifier {
         getFocusNodeAt(index + 1).requestFocus();
         notifyListeners();
       }
+
       // if text contains '\u200B' more than once, just keep the first instance
       if (controller.text.lastIndexOf('\u200B') > 3) {
         controller.text =
