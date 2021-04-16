@@ -6,36 +6,31 @@ import 'package:stories/storyView/storyView.dart';
 
 // This widget has access to the StoryModel through Consumer<StoryModel>
 // (see main.dart)
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  // Creates a new story and provides an Editor Model,
-  // which can be accessed in the StoryView with Consumer<EditorModel>
-  void _createStory() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ChangeNotifierProvider<EditorModel>(
-          create: (context) => EditorModel.newStory(),
-          child: StoryView.addStory(),
-        ),
-      ),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
+    // Creates a new story and provides an Editor Model,
+    // which can be accessed in the StoryView with Consumer<EditorModel>
+    void _createStory() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider<EditorModel>(
+            create: (context) => EditorModel.newStory(),
+            child: StoryView.addStory(),
+          ),
+        ),
+      );
+    }
+
     return Consumer<StoryModel>(builder: (context, storyModel, child) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(title),
         ),
         body: Center(
           child: Text(
