@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stories/stateManagement/editorModel.dart';
 import 'package:stories/stateManagement/storyModel.dart';
+import 'package:stories/storyView/storyHeader.dart';
 import 'package:stories/storyView/storyView.dart';
 
 // This widget has access to the StoryModel through Consumer<StoryModel>
@@ -33,9 +34,7 @@ class MyHomePage extends StatelessWidget {
           title: Text(title),
         ),
         body: Center(
-          child: Text(
-            'This is the homepage',
-          ),
+          child: StoryHeader(),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: _createStory,

@@ -12,7 +12,7 @@ enum SmartContentType {
   HEADING,
   QUOTE,
   BULLET,
-  NUMERATION
+  NUMERATION,
 } // PICTURE, AUDIO to be added
 
 // Defines style, padding etc. for each text type
@@ -61,9 +61,6 @@ extension SmartTextStyle on SmartContentType {
     switch (this) {
       case SmartContentType.BULLET:
         return '\u2022 ';
-        break;
-      case SmartContentType.NUMERATION:
-        return '1. ';
         break;
       default:
         return null;
