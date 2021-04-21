@@ -13,6 +13,8 @@ class EditorModel extends ChangeNotifier {
   List<TextEditingController> _controllers = [];
   List<int> _numeration = [];
 
+  DateTime date;
+
   SmartContentType selectedType;
 
   // This constructor creates the first few SmartContent Fields for a new
@@ -22,6 +24,8 @@ class EditorModel extends ChangeNotifier {
   EditorModel.newStory() {
     selectedType = SmartContentType.HEADING;
     insertContent(index: 0, type: selectedType);
+    date = DateTime.now();
+    insertContent(index: 1, type: SmartContentType.LocationDate);
   }
 
   // Some useful methods
@@ -93,81 +97,89 @@ class EditorModel extends ChangeNotifier {
   // This method itself does not call notifyListeners. Only the listener for
   // editing changes does.
   void insertContent({int index, SmartContentType type, String text}) {
-    TextEditingController controller = TextEditingController(
-      text: '\u200B' + (text ?? ''),
-    );
+    TextEditingController controller;
+    if (type != SmartContentType.LocationDate) {
+      controller = TextEditingController(
+        text: '\u200B' + (text ?? ''),
+      );
+    } else {
+      controller = null;
+    }
 
     // Handle editing changes
-    controller.addListener(() {
-      bool deletionHappened = false;
+    if (type != SmartContentType.LocationDate) {
+      controller.addListener(() {
+        bool deletionHappened = false;
 
-      // Deletion or Merging
-      if (!controller.text.startsWith('\u200B')) {
-        final int index = _controllers.indexOf(controller);
-        if (index > 1) {
-          TextEditingController controllerBefore = _controllers[index - 1];
-          controllerBefore.value = TextEditingValue(
-            text: controllerBefore.text += controller.text,
-            selection: TextSelection.fromPosition(
-              TextPosition(
-                  offset: controllerBefore.text.characters.length -
-                      controller.text.characters.length),
-            ),
+        // Deletion or Merging
+        if (!controller.text.startsWith('\u200B')) {
+          final int index = _controllers.indexOf(controller);
+          if (index > 1) {
+            TextEditingController controllerBefore = _controllers[index - 1];
+            controllerBefore.value = TextEditingValue(
+              text: controllerBefore.text += controller.text,
+              selection: TextSelection.fromPosition(
+                TextPosition(
+                    offset: controllerBefore.text.characters.length -
+                        controller.text.characters.length),
+              ),
+            );
+            getFocusNodeAt(index - 1).requestFocus();
+            _types.removeAt(index);
+            _controllers.removeAt(index);
+            _nodes.removeAt(index);
+            _numeration.removeAt(index);
+            _updateNumeration(startIndex: index);
+            notifyListeners();
+          } else if (index <= 1) {
+            // If the user deletes '\u200B' from the first normal text block
+            // put it back again
+            controller.text = '\u200B' + controller.text;
+          }
+          deletionHappened = true;
+        }
+
+        // Creation after Enter
+        if (controller.text.contains('\n')) {
+          final int index = _controllers.indexOf(controller);
+          List<String> _splittetText = controller.text.split('\n');
+          controller.text = _splittetText.first;
+          insertContent(
+            index: index + 1,
+            type: selectedType,
+            text: _splittetText.last,
           );
-          getFocusNodeAt(index - 1).requestFocus();
-          _types.removeAt(index);
-          _controllers.removeAt(index);
-          _nodes.removeAt(index);
-          _numeration.removeAt(index);
-          _updateNumeration(startIndex: index);
+          getControllerAt(index + 1).selection = TextSelection.fromPosition(
+            TextPosition(offset: 1),
+          );
+          getFocusNodeAt(index + 1).requestFocus();
           notifyListeners();
-        } else if (index <= 1) {
-          // If the user deletes '\u200B' from the first normal text block
-          // put it back again
-          controller.text = '\u200B' + controller.text;
         }
-        deletionHappened = true;
-      }
 
-      // Creation after Enter
-      if (controller.text.contains('\n')) {
-        final int index = _controllers.indexOf(controller);
-        List<String> _splittetText = controller.text.split('\n');
-        controller.text = _splittetText.first;
-        insertContent(
-          index: index + 1,
-          type: selectedType,
-          text: _splittetText.last,
-        );
-        getControllerAt(index + 1).selection = TextSelection.fromPosition(
-          TextPosition(offset: 1),
-        );
-        getFocusNodeAt(index + 1).requestFocus();
-        notifyListeners();
-      }
-
-      // if text contains '\u200B' more than once, just keep the first instance
-      if (controller.text.lastIndexOf('\u200B') > 3) {
-        controller.text =
-            '\u200B' + controller.text.substring(1).replaceAll('\u200B', '');
-      }
-
-      // If selection is before or contains the '\u200B', set Selection behind
-      if (controller.selection.base.offset == 0 && !deletionHappened) {
-        if (controller.selection.isCollapsed) {
-          controller.selection =
-              TextSelection.fromPosition(TextPosition(offset: 1));
-        } else {
-          controller.selection = TextSelection(
-            baseOffset: controller.selection.baseOffset + 1,
-            extentOffset: controller.selection.extentOffset,
-          );
+        // if text contains '\u200B' more than once, just keep the first instance
+        if (controller.text.lastIndexOf('\u200B') > 3) {
+          controller.text =
+              '\u200B' + controller.text.substring(1).replaceAll('\u200B', '');
         }
-      }
-    });
+
+        // If selection is before or contains the '\u200B', set Selection behind
+        if (controller.selection.base.offset == 0 && !deletionHappened) {
+          if (controller.selection.isCollapsed) {
+            controller.selection =
+                TextSelection.fromPosition(TextPosition(offset: 1));
+          } else {
+            controller.selection = TextSelection(
+              baseOffset: controller.selection.baseOffset + 1,
+              extentOffset: controller.selection.extentOffset,
+            );
+          }
+        }
+      });
+    }
 
     _types.insert(index, type);
-    _nodes.insert(index, FocusNode());
+    _nodes.insert(
+        index, (type != SmartContentType.LocationDate) ? FocusNode() : null);
     _controllers.insert(index, controller);
     _numeration.insert(
         index,

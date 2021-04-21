@@ -78,7 +78,9 @@ class SmartContent extends StatelessWidget {
       this.type,
       this.numerationNumber,
       this.controller,
-      this.focusNode})
+      this.focusNode,
+      this.date,
+      this.location})
       : super(key: key);
 
   final SmartContentType type;
@@ -86,19 +88,19 @@ class SmartContent extends StatelessWidget {
   final FocusNode focusNode;
   final bool readOnly;
   final String numerationNumber;
+  final DateTime date;
+  final String location;
 
   @override
   Widget build(BuildContext context) {
     switch (type) {
       case SmartContentType.LocationDate:
-        return LocationDate(dateTime: DateTime.now());
+        return LocationDate(dateTime: date);
         break;
       default:
         return TextField(
-          //Here in the future ask for type, if it is picture or audio,
-          //then return respective widget
           autofocus: true,
-          // Setting this to true updates the UI and the User Input disappears
+          // Setting readonly to true updates the UI and the User Input disappears
           readOnly: readOnly,
           controller: controller,
           focusNode: focusNode,

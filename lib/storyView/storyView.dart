@@ -94,6 +94,7 @@ class Editor extends StatelessWidget {
                           editorModel.getNumerationAt(index).toString(),
                       controller: editorModel.getControllerAt(index),
                       focusNode: editorModel.getFocusNodeAt(index),
+                      date: editorModel.date,
                     ),
                   );
                 },

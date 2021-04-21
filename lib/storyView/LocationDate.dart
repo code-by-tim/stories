@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:stories/stateManagement/editorModel.dart';
 
+// This class has access to its respective EditorModel through the
+// Consumer<EditorModel> widget.
 class LocationDate extends StatefulWidget {
   LocationDate({this.dateTime});
   final dateTime;
@@ -69,6 +73,8 @@ class _LocationDateState extends State<LocationDate> {
                 .then((pickedDate) {
               if (pickedDate != null) {
                 setState(() {
+                  Provider.of<EditorModel>(context, listen: false).date =
+                      pickedDate;
                   dateTime = pickedDate;
                 });
               }
