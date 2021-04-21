@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stories/storyView/LocationDate.dart';
 // This whole document is responsible for defining and displaying different
 // types of text correctly.
 // First, the text types and styles are defined
@@ -13,6 +14,7 @@ enum SmartContentType {
   QUOTE,
   BULLET,
   NUMERATION,
+  LocationDate
 } // PICTURE, AUDIO to be added
 
 // Defines style, padding etc. for each text type
@@ -87,26 +89,32 @@ class SmartContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      //Here in the future ask for type, if it is picture or audio,
-      //then return respective widget
-      autofocus: true,
-      // Setting this to true updates the UI and the User Input disappears
-      readOnly: readOnly,
-      controller: controller,
-      focusNode: focusNode,
-      keyboardType: TextInputType.multiline,
-      maxLines: null,
-      textAlign: type.align,
-      style: type.textStyle,
-      decoration: InputDecoration(
-          border: InputBorder.none,
-          prefixText: (type == SmartContentType.NUMERATION)
-              ? numerationNumber + '.'
-              : type.prefix,
-          prefixStyle: type.textStyle,
-          isDense: true,
-          contentPadding: type.padding),
-    );
+    switch (type) {
+      case SmartContentType.LocationDate:
+        return LocationDate(dateTime: DateTime.now());
+        break;
+      default:
+        return TextField(
+          //Here in the future ask for type, if it is picture or audio,
+          //then return respective widget
+          autofocus: true,
+          // Setting this to true updates the UI and the User Input disappears
+          readOnly: readOnly,
+          controller: controller,
+          focusNode: focusNode,
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          textAlign: type.align,
+          style: type.textStyle,
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              prefixText: (type == SmartContentType.NUMERATION)
+                  ? numerationNumber + '.'
+                  : type.prefix,
+              prefixStyle: type.textStyle,
+              isDense: true,
+              contentPadding: type.padding),
+        );
+    }
   }
 }

@@ -1,19 +1,5 @@
 import 'package:flutter/material.dart';
 
-class StoryHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(),
-        LocationDate(
-          dateTime: DateTime.now(),
-        )
-      ],
-    );
-  }
-}
-
 class LocationDate extends StatefulWidget {
   LocationDate({this.dateTime});
   final dateTime;
