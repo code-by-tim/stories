@@ -62,14 +62,15 @@ class _LocationDateState extends State<LocationDate> {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        Container(width: 16.5),
         Text('Location, '),
         GestureDetector(
           onTap: () {
             showDatePicker(
                     context: context,
                     initialDate: dateTime,
-                    firstDate: DateTime(1950),
-                    lastDate: DateTime(2050))
+                    firstDate: DateTime(DateTime.now().year - 70),
+                    lastDate: DateTime(DateTime.now().year + 30))
                 .then((pickedDate) {
               if (pickedDate != null) {
                 setState(() {
