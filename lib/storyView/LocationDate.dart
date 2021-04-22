@@ -4,16 +4,8 @@ import 'package:stories/stateManagement/editorModel.dart';
 
 // This class has access to its respective EditorModel through the
 // Consumer<EditorModel> widget.
-class LocationDate extends StatefulWidget {
+class LocationDate extends StatelessWidget {
   LocationDate({this.dateTime});
-  final dateTime;
-
-  @override
-  _LocationDateState createState() => _LocationDateState(dateTime);
-}
-
-class _LocationDateState extends State<LocationDate> {
-  _LocationDateState(this.dateTime);
 
   // Returns the respective month as a String
   String _getMonth(int month) {
@@ -56,35 +48,35 @@ class _LocationDateState extends State<LocationDate> {
     }
   }
 
-  DateTime dateTime;
+  final DateTime dateTime;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(width: 16.5),
-        Text('Location, '),
-        GestureDetector(
-          onTap: () {
-            showDatePicker(
-                    context: context,
-                    initialDate: dateTime,
-                    firstDate: DateTime(DateTime.now().year - 70),
-                    lastDate: DateTime(DateTime.now().year + 30))
-                .then((pickedDate) {
-              if (pickedDate != null) {
-                setState(() {
-                  Provider.of<EditorModel>(context, listen: false).date =
-                      pickedDate;
-                  dateTime = pickedDate;
+    return Consumer<EditorModel>(
+      builder: (context, editorModel, _) {
+        return Row(
+          children: [
+            Container(width: 16.5),
+            Text('Location, '),
+            GestureDetector(
+              onTap: () {
+                showDatePicker(
+                        context: context,
+                        initialDate: dateTime,
+                        firstDate: DateTime(DateTime.now().year - 70),
+                        lastDate: DateTime(DateTime.now().year + 30))
+                    .then((pickedDate) {
+                  if (pickedDate != null) {
+                    editorModel.setDateTo(pickedDate);
+                  }
                 });
-              }
-            });
-          },
-          child: Text(
-              '${dateTime.day}. ${_getMonth(dateTime.month)} ${dateTime.year}'),
-        ),
-      ],
+              },
+              child: Text(
+                  '${dateTime.day}. ${_getMonth(dateTime.month)} ${dateTime.year}'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

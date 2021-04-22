@@ -42,6 +42,12 @@ class EditorModel extends ChangeNotifier {
   SmartContentType getTypeAt(int index) => _types.elementAt(index);
   int getNumerationAt(int index) => _numeration.elementAt(index);
 
+  // Sets the date to newDate and notifies listeners
+  void setDateTo(DateTime newDate) {
+    date = newDate;
+    notifyListeners();
+  }
+
   // Call this method after another SmartContent Field is focused to update
   // the selected type
   void setFocus(SmartContentType focusedType) {
