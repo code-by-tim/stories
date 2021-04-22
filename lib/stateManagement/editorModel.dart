@@ -30,7 +30,12 @@ class EditorModel extends ChangeNotifier {
 
   // Some useful methods
   int get fieldAmount => _types.length;
-  int get activeFocusIndex => _nodes.indexWhere((node) => node.hasFocus);
+  int get activeFocusIndex {
+    // Differ here cause DateLocation has no FocusNode
+    if (_nodes.first.hasFocus) return 0;
+    return _nodes.indexWhere((node) => node.hasFocus, 2);
+  }
+
   FocusNode getFocusNodeAt(int index) => _nodes.elementAt(index);
   TextEditingController getControllerAt(int index) =>
       _controllers.elementAt(index);
@@ -111,10 +116,10 @@ class EditorModel extends ChangeNotifier {
       controller.addListener(() {
         bool deletionHappened = false;
 
-        // Deletion or Merging
+        // Deletion and Merging
         if (!controller.text.startsWith('\u200B')) {
           final int index = _controllers.indexOf(controller);
-          if (index > 1) {
+          if (index > 2) {
             TextEditingController controllerBefore = _controllers[index - 1];
             controllerBefore.value = TextEditingValue(
               text: controllerBefore.text += controller.text,
@@ -131,7 +136,7 @@ class EditorModel extends ChangeNotifier {
             _numeration.removeAt(index);
             _updateNumeration(startIndex: index);
             notifyListeners();
-          } else if (index <= 1) {
+          } else if (index <= 2) {
             // If the user deletes '\u200B' from the first normal text block
             // put it back again
             controller.text = '\u200B' + controller.text;
@@ -141,18 +146,31 @@ class EditorModel extends ChangeNotifier {
 
         // Creation after Enter
         if (controller.text.contains('\n')) {
-          final int index = _controllers.indexOf(controller);
-          List<String> _splittetText = controller.text.split('\n');
-          controller.text = _splittetText.first;
-          insertContent(
-            index: index + 1,
-            type: selectedType,
-            text: _splittetText.last,
-          );
-          getControllerAt(index + 1).selection = TextSelection.fromPosition(
-            TextPosition(offset: 1),
-          );
-          getFocusNodeAt(index + 1).requestFocus();
+          if (index >= 2) {
+            final int index = _controllers.indexOf(controller);
+            List<String> _splittetText = controller.text.split('\n');
+            controller.text = _splittetText.first;
+            insertContent(
+              index: index + 1,
+              type: selectedType,
+              text: _splittetText.last,
+            );
+            getControllerAt(index + 1).selection = TextSelection.fromPosition(
+              TextPosition(offset: 1),
+            );
+            getFocusNodeAt(index + 1).requestFocus();
+          } else if (index == 0) {
+            // If the user presses enter in the story title, insert textField
+            controller.text = controller.text.replaceFirst('\n', '');
+            insertContent(
+              index: 2,
+              type: SmartContentType.T,
+            );
+            getControllerAt(2).selection = TextSelection.fromPosition(
+              TextPosition(offset: 1),
+            );
+            getFocusNodeAt(2).requestFocus();
+          }
           notifyListeners();
         }
 
