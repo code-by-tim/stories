@@ -139,7 +139,9 @@ class EditorModel extends ChangeNotifier {
           } else if (index <= 2) {
             // If the user deletes '\u200B' from the first normal text block
             // put it back again
-            controller.text = '\u200B' + controller.text;
+            controller.value = TextEditingValue(
+                text: controller.text = '\u200B' + controller.text,
+                selection: TextSelection.fromPosition(TextPosition(offset: 1)));
           }
           deletionHappened = true;
         }
