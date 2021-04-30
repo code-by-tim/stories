@@ -65,7 +65,6 @@ class Editor extends StatelessWidget {
   Editor({this.inEditMode});
 
   final bool inEditMode;
-  final bool showToolbar = true;
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +120,14 @@ class Editor extends StatelessWidget {
                 ),
               );
             } else {
-              return Container(
-                width: 0.0,
-                height: 0.0,
+              return Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  width: 0.0,
+                  height: 0.0,
+                ),
               );
             }
           },
