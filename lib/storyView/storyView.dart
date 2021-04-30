@@ -101,8 +101,7 @@ class Editor extends StatelessWidget {
             },
           ),
         ),
-        //Toolbar: The toolbar is causing everything not to be displayed
-        // when not in editMode
+        //Toolbar:
         KeyboardVisibilityBuilder(
           builder: (context, keyboardIsVisible) {
             if (keyboardIsVisible) {

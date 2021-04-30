@@ -100,8 +100,6 @@ class SmartContent extends StatelessWidget {
       default:
         return TextField(
           autofocus: true,
-          // Setting readonly to true updates the UI and the User Input disappears
-          // Reason is the toolbar, see storyView.dart
           readOnly: readOnly,
           controller: controller,
           focusNode: focusNode,
